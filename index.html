@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BunkerMate | Smart Attendance Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons for premium feel -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="dashboard-title">
+                <h1>BunkerMate</h1>
+                <p id="current-date">Today, March 10, 2026</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" id="add-subject-btn">
+                    <i data-lucide="plus" class="btn-icon"></i> Add Subject
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <section class="stats-grid">
+            <div class="glass-card stat-item">
+                <span class="stat-label">Overall Attendance</span>
+                <div class="stat-value" id="overall-percentage">0%</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="overall-progress"
+                        style="width: 0%; background: var(--accent-indigo);"></div>
+                </div>
+            </div>
+            <div class="glass-card stat-item">
+                <span class="stat-label">Goal Percentage</span>
+                <div class="stat-value">75%</div>
+                <p class="stat-label">Minimum Mandatory</p>
+            </div>
+            <div class="glass-card stat-item">
+                <span class="stat-label">Top Performer</span>
+                <div class="stat-value" id="top-subject">--</div>
+                <p class="stat-label" id="top-subject-count">0/0 Classes</p>
+            </div>
+            <div class="glass-card stat-item">
+                <span class="stat-label">Current Bunkable</span>
+                <div class="stat-value" id="bunkable-classes">--</div>
+                <p class="stat-label">Safe Bunking available</p>
+            </div>
+        </section>
+
+        <!-- Subjects Section -->
+        <section class="subjects-section">
+            <div class="section-header">
+                <h2>Subjects</h2>
+            </div>
+            <div class="subject-grid" id="subject-list">
+                <!-- Subject cards will be injected here via JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal-overlay" id="add-modal">
+        <div class="glass-card modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3 class="modal-title">New Subject</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <form id="add-subject-form">
+                <div class="form-group">
+                    <label class="form-label" for="subject-name">Subject Name</label>
+                    <input type="text" id="subject-name" class="form-input" placeholder="e.g. Mathematics II" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="subject-hours">Weekly Lecture Hours</label>
+                    <input type="number" id="subject-hours" class="form-input" value="4" min="1" max="50" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Lecture Days</label>
+                    <div class="days-selector">
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="1"> Mon</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="2"> Tue</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="3"> Wed</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="4"> Thu</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="5"> Fri</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="6"> Sat</label>
+                        <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="0"> Sun</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="subject-start-date">Start Date</label>
+                    <input type="date" id="subject-start-date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="subject-end-date">End Date</label>
+                    <input type="date" id="subject-end-date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Starting Counts (Optional)</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <label class="form-label" style="font-size: 0.8rem;">Attended</label>
+                            <input type="number" id="subject-attended" class="form-input" value="0" min="0">
+                        </div>
+                        <div style="flex: 1;">
+                            <label class="form-label" style="font-size: 0.8rem;">Missed</label>
+                            <input type="number" id="subject-missed" class="form-input" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Create Subject
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="history-modal">
+        <div class="glass-card modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="history-title">Attendance History</h3>
+                <button class="close-btn"
+                    onclick="document.getElementById('history-modal').classList.remove('active')">&times;</button>
+            </div>
+            <div id="history-content">
+                <!-- Logs will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast (Hidden by default) -->
+    <div id="toast"
+        style="position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; border-radius: 12px; background: var(--accent-indigo); color: white; transform: translateY(150%); transition: transform 0.3s ease; z-index: 2000;">
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
