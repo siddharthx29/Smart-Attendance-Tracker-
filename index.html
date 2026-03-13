@@ -11,6 +11,11 @@
 </head>
 
 <body>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
 
     <div class="container">
 
@@ -20,9 +25,15 @@
                 <h1>BunkerMate</h1>
                 <p id="current-date">Today, March 10, 2026</p>
             </div>
-            <div class="header-actions">
+            <div class="header-right">
                 <button class="btn btn-primary" id="add-subject-btn">
                     <i data-lucide="plus" class="btn-icon"></i> Add Subject
+                </button>
+                <button class="icon-btn" id="settings-btn" title="Settings">
+                    <i data-lucide="settings"></i>
+                </button>
+                <button class="icon-btn" id="profile-btn" title="Account">
+                    <i data-lucide="user"></i>
                 </button>
             </div>
         </header>
@@ -136,9 +147,102 @@
         </div>
     </div>
 
-    <!-- Notification Toast (Hidden by default) -->
-    <div id="toast"
-        style="position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; border-radius: 12px; background: var(--accent-indigo); color: white; transform: translateY(150%); transition: transform 0.3s ease; z-index: 2000;">
+    <!-- Profile Modal -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="glass-card modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title">My Account</h3>
+                <button class="close-btn"
+                    onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</button>
+            </div>
+            <div class="profile-info">
+                <div class="profile-avatar" id="user-avatar">?</div>
+                <h2 id="display-username">Username</h2>
+                <p style="color: var(--text-secondary);">Student Account</p>
+            </div>
+            <button class="btn btn-danger" id="logout-btn" style="width: 100%; justify-content: center;">
+                <i data-lucide="log-out"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="glass-card modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Settings</h3>
+                <button class="close-btn"
+                    onclick="document.getElementById('settings-modal').classList.remove('active')">&times;</button>
+            </div>
+
+            <div class="setting-item">
+                <div>
+                    <h4 style="margin-bottom: 4px;">Appearance</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Customize your visual experience</p>
+                </div>
+                <div class="theme-selector">
+                    <div class="theme-opt" data-theme="light">Light</div>
+                    <div class="theme-opt active" data-theme="dark">Dark</div>
+                    <div class="theme-opt" data-theme="system">System</div>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div>
+                    <h4 style="margin-bottom: 4px;">Browser Scaling</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Optimize for 90% scaling</p>
+                </div>
+                <label class="day-checkbox">
+                    <input type="checkbox" id="scaling-toggle"> Apply Fix
+                </label>
+            </div>
+
+            <div
+                style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
+                BunkerMate v2.0 • Smart Attendance Tracker
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Overlay (Absolute priority) -->
+    <div class="auth-page" id="auth-page">
+        <div class="glass-card auth-card">
+            <div class="auth-header">
+                <h1>BunkerMate</h1>
+                <p>Smart Attendance Tracker</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login">Login</div>
+                <div class="auth-tab" id="tab-signup">Sign Up</div>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="login-user" class="form-input" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="login-pass" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary"
+                    style="width: 100%; justify-content: center;">Login</button>
+            </form>
+
+            <form id="signup-form" class="hidden">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="signup-user" class="form-input" placeholder="Choose username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="signup-pass" class="form-input" placeholder="Create password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Create
+                    Account</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>

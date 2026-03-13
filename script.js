@@ -1,5 +1,7 @@
 // State Management
 let subjects = [];
+let currentUser = null;
+let users = [];
 
 // Helper to get current date string (YYYY-MM-DD)
 const getTodayStr = () => new Date().toISOString().split('T')[0];
@@ -15,7 +17,52 @@ const getStartOfWeek = () => {
     return new Date(d.setDate(diff)).toISOString().split('T')[0];
 };
 
+// Theme Management
+function initTheme() {
+    const savedTheme = localStorage.getItem('bunkerMate_theme') || 'system';
+    const scaling = localStorage.getItem('bunkerMate_scaling') === 'true';
+    
+    applyTheme(savedTheme);
+    applyScaling(scaling);
+    
+    // Update UI
+    document.querySelectorAll('.theme-opt').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.theme === savedTheme);
+    });
+    document.getElementById('scaling-toggle').checked = scaling;
+}
+
+function applyTheme(theme) {
+    localStorage.setItem('bunkerMate_theme', theme);
+    document.querySelectorAll('.theme-opt').forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
+    
+    if (theme === 'system') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (localStorage.getItem('bunkerMate_theme') === 'system') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+});
+
+function applyScaling(active) {
+    localStorage.setItem('bunkerMate_scaling', active);
+    document.body.classList.toggle('scaled-90', active);
+}
+
 // DOM Elements
+const authPage = document.getElementById('auth-page');
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const tabLogin = document.getElementById('tab-login');
+const tabSignup = document.getElementById('tab-signup');
+
 const subjectList = document.getElementById('subject-list');
 const addSubjectBtn = document.getElementById('add-subject-btn');
 const addModal = document.getElementById('add-modal');
@@ -26,6 +73,12 @@ const historyModal = document.getElementById('history-modal');
 const historyContent = document.getElementById('history-content');
 const historyTitle = document.getElementById('history-title');
 
+const settingsBtn = document.getElementById('settings-btn');
+const settingsModal = document.getElementById('settings-modal');
+const profileBtn = document.getElementById('profile-btn');
+const profileModal = document.getElementById('profile-modal');
+const logoutBtn = document.getElementById('logout-btn');
+
 // Stats Elements
 const overallPercentageEl = document.getElementById('overall-percentage');
 const overallProgressEl = document.getElementById('overall-progress');
@@ -35,23 +88,95 @@ const bunkableClassesEl = document.getElementById('bunkable-classes');
 
 // Initial Setup
 document.addEventListener('DOMContentLoaded', () => {
-    loadData();
-    updateDashboard();
-    renderSubjects();
+    loadUsers();
+    initTheme();
+    checkAuth();
     setCurrentDate();
 });
+
+function checkAuth() {
+    const saved = localStorage.getItem('bunkerMate_currentUser');
+    if (saved) {
+        currentUser = JSON.parse(saved);
+        authPage.classList.add('hidden');
+        document.getElementById('display-username').textContent = currentUser.username;
+        document.getElementById('user-avatar').textContent = currentUser.username[0].toUpperCase();
+        loadData();
+        updateDashboard();
+        renderSubjects();
+    } else {
+        authPage.classList.remove('hidden');
+    }
+}
 
 function setCurrentDate() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     currentYearDate.textContent = `Today, ${new Date().toLocaleDateString('en-US', options)}`;
 }
 
+// Auth Logic
+tabLogin.onclick = () => {
+    tabLogin.classList.add('active');
+    tabSignup.classList.remove('active');
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+};
+
+tabSignup.onclick = () => {
+    tabSignup.classList.add('active');
+    tabLogin.classList.remove('active');
+    signupForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+};
+
+loginForm.onsubmit = (e) => {
+    e.preventDefault();
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
+    
+    const account = users.find(u => u.username === user && u.password === pass);
+    if (account) {
+        currentUser = account;
+        localStorage.setItem('bunkerMate_currentUser', JSON.stringify(currentUser));
+        checkAuth();
+        showToast(`Welcome back, ${user}!`);
+    } else {
+        showToast("Invalid username or password");
+    }
+};
+
+signupForm.onsubmit = (e) => {
+    e.preventDefault();
+    const user = document.getElementById('signup-user').value;
+    const pass = document.getElementById('signup-pass').value;
+
+    if (users.some(u => u.username === user)) {
+        showToast("Username already exists");
+        return;
+    }
+
+    const newUser = { username: user, password: pass };
+    users.push(newUser);
+    saveUsers();
+    currentUser = newUser;
+    localStorage.setItem('bunkerMate_currentUser', JSON.stringify(currentUser));
+    checkAuth();
+    showToast(`Account created! Welcome ${user}`);
+};
+
+logoutBtn.onclick = () => {
+    currentUser = null;
+    localStorage.removeItem('bunkerMate_currentUser');
+    subjects = [];
+    profileModal.classList.remove('active');
+    checkAuth();
+};
+
 // Modal Logic
 addSubjectBtn.onclick = () => addModal.classList.add('active');
 closeModal.onclick = () => addModal.classList.remove('active');
-window.onclick = (e) => {
-    if (e.target === addModal) addModal.classList.remove('active');
-}
+settingsBtn.onclick = () => settingsModal.classList.add('active');
+profileBtn.onclick = () => profileModal.classList.add('active');
 
 // Form Submission
 addSubjectForm.onsubmit = (e) => {
@@ -87,14 +212,41 @@ addSubjectForm.onsubmit = (e) => {
     showToast(`Added ${newSubject.name}`);
 };
 
+window.onclick = (e) => {
+    if (e.target === addModal) addModal.classList.remove('active');
+    if (e.target === settingsModal) settingsModal.classList.remove('active');
+    if (e.target === profileModal) profileModal.classList.remove('active');
+    if (e.target === authPage) { /* Prevent closing auth page by clicking outside */ }
+};
+
+// Settings Listeners
+document.querySelectorAll('.theme-opt').forEach(opt => {
+    opt.onclick = () => applyTheme(opt.dataset.theme);
+});
+
+document.getElementById('scaling-toggle').onchange = (e) => {
+    applyScaling(e.target.checked);
+};
+
 // Data Persistence
+function saveUsers() {
+    localStorage.setItem('bunkerMate_users', JSON.stringify(users));
+}
+
+function loadUsers() {
+    const data = localStorage.getItem('bunkerMate_users');
+    if (data) users = JSON.parse(data);
+}
+
 function saveData() {
-    localStorage.setItem('bunkerMate_subjects', JSON.stringify(subjects));
+    if (!currentUser) return;
+    localStorage.setItem(`bunkerMate_subjects_${currentUser.username}`, JSON.stringify(subjects));
 }
 
 function loadData() {
-    const data = localStorage.getItem('bunkerMate_subjects');
-    if (data) subjects = JSON.parse(data);
+    if (!currentUser) return;
+    const data = localStorage.getItem(`bunkerMate_subjects_${currentUser.username}`);
+    subjects = data ? JSON.parse(data) : [];
 }
 
 // Attendance Actions
@@ -386,6 +538,17 @@ function renderSubjects() {
                 </button>
             </div>
         `;
+        
+        // Dynamic Entry Animation
+        const index = subjects.indexOf(subject);
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+
         subjectList.appendChild(card);
     });
 
