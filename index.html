@@ -11,75 +11,71 @@
 </head>
 
 <body>
-    <div class="bg-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+    <!-- Dynamic Classroom Scene -->
+    <div class="academic-background">
+        <div class="bg-scene"></div>
+        <div class="floating-elements" id="floating-elements">
+            <!-- Floating icons will be injected here via CSS/JS -->
+        </div>
     </div>
-
     <div class="container">
-
         <!-- Header -->
         <header class="dashboard-header">
-            <div class="dashboard-title">
-                <h1>BunkerMate</h1>
-                <p id="current-date">Today, March 10, 2026</p>
+            <div class="header-branding">
+                <h1 class="logo-text">Bunker<span>Mate</span></h1>
+                <p class="tagline">You can still save yourself and maintain 75%</p>
+                <p id="current-date" class="header-date">Today, Saturday, March 14, 2026</p>
             </div>
-            <div class="header-right">
-                <button class="btn btn-primary" id="add-subject-btn">
-                    <i data-lucide="plus" class="btn-icon"></i> Add Subject
+            <div class="header-actions">
+                <button class="btn btn-primary btn-glow btn-vivid" id="add-subject-btn">
+                    <i data-lucide="plus-circle"></i> Enroll Subject
                 </button>
-                <button class="icon-btn" id="settings-btn" title="Settings">
+                <button class="icon-btn-bordered" id="settings-btn" title="Settings">
                     <i data-lucide="settings"></i>
-                </button>
-                <button class="icon-btn" id="profile-btn" title="Account">
-                    <i data-lucide="user"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Stats Overview -->
-        <section class="stats-grid">
-            <div class="glass-card stat-item">
-                <span class="stat-label">Overall Attendance</span>
-                <div class="stat-value" id="overall-percentage">0%</div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="overall-progress"
-                        style="width: 0%; background: var(--accent-indigo);"></div>
+        <!-- Stats Section -->
+        <section class="stats-overview">
+            <div class="stats-row">
+                <div class="glass-card stat-card">
+                    <span class="stat-lbl">OVERALL ATTENDANCE</span>
+                    <div class="stat-val" id="overall-percentage">0%</div>
+                    <div class="mini-progress-track">
+                        <div class="mini-progress-fill" id="overall-progress" style="width: 0%"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="glass-card stat-item">
-                <span class="stat-label">Goal Percentage</span>
-                <div class="stat-value">75%</div>
-                <p class="stat-label">Minimum Mandatory</p>
-            </div>
-            <div class="glass-card stat-item">
-                <span class="stat-label">Top Performer</span>
-                <div class="stat-value" id="top-subject">--</div>
-                <p class="stat-label" id="top-subject-count">0/0 Classes</p>
-            </div>
-            <div class="glass-card stat-item">
-                <span class="stat-label">Current Bunkable</span>
-                <div class="stat-value" id="bunkable-classes">--</div>
-                <p class="stat-label">Safe Bunking available</p>
+                <div class="glass-card stat-card">
+                    <span class="stat-lbl">GOAL PERCENTAGE</span>
+                    <div class="stat-val">75%</div>
+                    <span class="stat-sub">MINIMUM MANDATORY</span>
+                </div>
+                <div class="glass-card stat-card">
+                    <span class="stat-lbl">TOP PERFORMER</span>
+                    <div class="stat-val" id="top-subject">--</div>
+                    <span class="stat-sub" id="top-subject-count">0/0 CLASSES</span>
+                </div>
+                <div class="glass-card stat-card highlight-card">
+                    <span class="stat-lbl">CURRENT BUNKABLE</span>
+                    <div class="stat-val highlight" id="bunkable-classes">0</div>
+                    <span class="stat-sub">SAFE BUNKING AVAILABLE</span>
+                </div>
             </div>
         </section>
 
         <!-- Subjects Section -->
         <section class="subjects-section">
-            <div class="section-header">
-                <h2>Subjects</h2>
-            </div>
+            <h2 class="section-title">Subjects</h2>
             <div class="subject-grid" id="subject-list">
-                <!-- Subject cards will be injected here via JS -->
+                <!-- Subjects will be injected here -->
             </div>
         </section>
-
     </div>
 
     <!-- Add Subject Modal -->
     <div class="modal-overlay" id="add-modal">
-        <div class="glass-card modal-content" style="max-width: 450px;">
+        <div class="glass-morphism modal-content" style="max-width: 450px;">
             <div class="modal-header">
                 <h3 class="modal-title">New Subject</h3>
                 <button class="close-btn" id="close-modal">&times;</button>
@@ -135,7 +131,7 @@
 
     <!-- History Modal -->
     <div class="modal-overlay" id="history-modal">
-        <div class="glass-card modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+        <div class="glass-morphism modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
             <div class="modal-header">
                 <h3 class="modal-title" id="history-title">Attendance History</h3>
                 <button class="close-btn"
@@ -147,43 +143,50 @@
         </div>
     </div>
 
-    <!-- Profile Modal -->
-    <div class="modal-overlay" id="profile-modal">
-        <div class="glass-card modal-content" style="max-width: 400px;">
-            <div class="modal-header">
-                <h3 class="modal-title">My Account</h3>
-                <button class="close-btn"
-                    onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</button>
-            </div>
-            <div class="profile-info">
-                <div class="profile-avatar" id="user-avatar">?</div>
-                <h2 id="display-username">Username</h2>
-                <p style="color: var(--text-secondary);">Student Account</p>
-            </div>
-            <button class="btn btn-danger" id="logout-btn" style="width: 100%; justify-content: center;">
-                <i data-lucide="log-out"></i> Logout
-            </button>
-        </div>
-    </div>
-
     <!-- Settings Modal -->
     <div class="modal-overlay" id="settings-modal">
-        <div class="glass-card modal-content" style="max-width: 450px;">
+        <div class="glass-morphism modal-content" style="max-width: 450px;">
             <div class="modal-header">
                 <h3 class="modal-title">Settings</h3>
                 <button class="close-btn"
                     onclick="document.getElementById('settings-modal').classList.remove('active')">&times;</button>
             </div>
 
-            <div class="setting-item">
-                <div>
-                    <h4 style="margin-bottom: 4px;">Appearance</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Customize your visual experience</p>
+            <div class="setting-item theme-section-optimized">
+                <style>
+                    .theme-section-optimized { display: flex; flex-direction: column !important; align-items: stretch !important; }
+                    .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+                    .theme-card { 
+                        display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.25rem 0.5rem;
+                        background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px;
+                        cursor: pointer; transition: var(--transition); color: var(--text-secondary);
+                    }
+                    .theme-card i { width: 20px; height: 20px; }
+                    .theme-card span { font-size: 0.8rem; font-weight: 700; }
+                    .theme-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-3px); }
+                    .theme-card.active { 
+                        background: var(--accent-blue); color: white; border-color: var(--accent-blue);
+                        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+                    }
+                    [data-theme="light"] .theme-card { background: rgba(0,0,0,0.03); }
+                </style>
+                <div class="setting-info" style="text-align: left;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 4px;">Appearance Mode</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Select your preferred visual style</p>
                 </div>
-                <div class="theme-selector">
-                    <div class="theme-opt" data-theme="light">Light</div>
-                    <div class="theme-opt active" data-theme="dark">Dark</div>
-                    <div class="theme-opt" data-theme="system">System</div>
+                <div class="theme-grid">
+                    <div class="theme-card" data-theme="light">
+                        <i data-lucide="sun"></i>
+                        <span>Light</span>
+                    </div>
+                    <div class="theme-card active" data-theme="dark">
+                        <i data-lucide="moon"></i>
+                        <span>Dark</span>
+                    </div>
+                    <div class="theme-card" data-theme="system">
+                        <i data-lucide="monitor"></i>
+                        <span>System</span>
+                    </div>
                 </div>
             </div>
 
@@ -204,46 +207,8 @@
         </div>
     </div>
 
-    <!-- Auth Overlay (Absolute priority) -->
-    <div class="auth-page" id="auth-page">
-        <div class="glass-card auth-card">
-            <div class="auth-header">
-                <h1>BunkerMate</h1>
-                <p>Smart Attendance Tracker</p>
-            </div>
-
-            <div class="auth-tabs">
-                <div class="auth-tab active" id="tab-login">Login</div>
-                <div class="auth-tab" id="tab-signup">Sign Up</div>
-            </div>
-
-            <form id="login-form">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="login-user" class="form-input" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="login-pass" class="form-input" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary"
-                    style="width: 100%; justify-content: center;">Login</button>
-            </form>
-
-            <form id="signup-form" class="hidden">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" id="signup-user" class="form-input" placeholder="Choose username" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="signup-pass" class="form-input" placeholder="Create password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Create
-                    Account</button>
-            </form>
-        </div>
-    </div>
+    <!-- Notifications -->
+    <div id="toast"></div>
 
     <script src="script.js"></script>
     <script>
