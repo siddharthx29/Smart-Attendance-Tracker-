@@ -208,17 +208,20 @@ body::before {
 .modal-content {
     background: var(--card-bg);
     padding: 3rem; border-radius: 32px; border: 1px solid var(--glass-border);
-    max-width: 500px; width: 90%; position: relative;
+    max-width: 650px; width: 95%; position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
-@keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+@keyframes modalIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
-.modal-title { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); }
+.modal-title { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; }
 .close-btn { background: none; border: none; font-size: 2.5rem; color: var(--text-dim); cursor: pointer; line-height: 1; transition: var(--transition); }
 .close-btn:hover { color: var(--accent-rose); transform: scale(1.1); }
 
-/* Form Elements Optimized */
+/* Form Layout Optimized */
+.form-row { display: flex; gap: 1.5rem; width: 100%; margin-bottom: 1.8rem; }
+.form-row .form-group { flex: 1; margin-bottom: 0; }
 .form-group { text-align: left; margin-bottom: 1.8rem; }
 .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .form-input {

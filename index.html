@@ -101,23 +101,26 @@
                         <label class="day-checkbox"><input type="checkbox" name="lecture-day" value="0"> Sun</label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="subject-start-date">Start Date</label>
-                    <input type="date" id="subject-start-date" class="form-input">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="subject-start-date">Start Date</label>
+                        <input type="date" id="subject-start-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="subject-end-date">End Date</label>
+                        <input type="date" id="subject-end-date" class="form-input">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="subject-end-date">End Date</label>
-                    <input type="date" id="subject-end-date" class="form-input">
-                </div>
-                <div class="form-group">
+
+                <div class="form-group" style="margin-top: 0.5rem;">
                     <label class="form-label">Starting Counts (Optional)</label>
-                    <div style="display: flex; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <label class="form-label" style="font-size: 0.8rem;">Attended</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.8rem; opacity: 0.7;">Attended</label>
                             <input type="number" id="subject-attended" class="form-input" value="0" min="0">
                         </div>
-                        <div style="flex: 1;">
-                            <label class="form-label" style="font-size: 0.8rem;">Missed</label>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 0.8rem; opacity: 0.7;">Missed</label>
                             <input type="number" id="subject-missed" class="form-input" value="0" min="0">
                         </div>
                     </div>
