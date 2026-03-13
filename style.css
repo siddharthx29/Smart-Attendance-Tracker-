@@ -212,6 +212,8 @@ body::before {
     box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
+.history-modal-content { max-height: 85vh; overflow-y: auto; }
+
 @keyframes modalIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
@@ -261,6 +263,13 @@ body::before {
     .stats-row { grid-template-columns: 1fr; }
     .stat-val { font-size: 2.5rem; }
     .header-actions { flex-wrap: wrap; }
+    
+    /* Mobile Modal & Form Fixes */
+    .modal-content { padding: 2rem 1.5rem; width: 95%; border-radius: 24px; }
+    .form-row { flex-direction: column; gap: 1.8rem; }
+    .form-group { margin-bottom: 0; }
+    .days-selector { justify-content: center; }
+    .day-checkbox { flex: 1; min-width: 80px; justify-content: center; }
 }
 
 /* Toast & Utilities */
