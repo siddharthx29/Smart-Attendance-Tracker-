@@ -1,6 +1,6 @@
 # 🎓 BunkerMate | Anonymous Device-Based Attendance Tracker
 
-**BunkerMate** is a premium, full-stack application for students to manage their attendance and calculate "bunkable" classes. Data is stored in a **PostgreSQL database** and uniquely identified by your browser session (no accounts required!).
+**BunkerMate** is a premium, full-stack application for students to manage their attendance and calculate "bunkable" classes. Data is stored in a **PostgreSQL database** and uniquely identified by your browser session (no accounts required!). 
 
 ## 🚀 Key Features
 
