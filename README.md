@@ -34,4 +34,4 @@ Open `index.html`. The app will automatically generate a unique Device ID and co
 - **Icons**: Lucide Icons.
 
 ---
-*BunkerMate - Miss classes, but stay safe at 75%.*
+*BunkerMate - Miss classes, but stay safe at 75%.*. https://bunkermate.teamnexterp.com/
